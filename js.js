@@ -12,6 +12,8 @@ let lastLoc = {latitude:0, longitude:0};
 let NorthOff = 0;
 
 start.addEventListener("click", ()=>{
+    if (DeviceOrientationEvent?.requestPermission !== undefined)
+        DeviceOrientationEvent?.requestPermission()
     navigator.geolocation.watchPosition((pos)=>{
         gps.innerText = `${pos.coords.latitude} / ${pos.coords.longitude}`;
         lastLoc = pos.coords;
@@ -29,7 +31,7 @@ start.addEventListener("click", ()=>{
         time.innerText = new Date();
         orientation.innerText = JSON.stringify(controller?.getScreenAdjustedEuler());
         sun.innerText = JSON.stringify(sun_pos(lastLoc));
-        heading.innerText = (360-controller?.getScreenAdjustedEuler().alpha) + NorthOff;
+        heading.innerText = ((360-controller?.getScreenAdjustedEuler().alpha) + NorthOff) % 360;
     })
 })
 
